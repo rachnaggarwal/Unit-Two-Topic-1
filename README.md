@@ -55,7 +55,7 @@ DCL includes commands such as GRANT and REVOKE which mainly deal with the rights
 ### DQL - Data Query language
 DQL statements are used for performing queries on the data within schema objects. The purpose of the DQL Command is to get some schema relation based on the query passed to it. 
 - SELECT: It is used to retrieve data from the database.
-- 
+
 ### TCL - Transaction Control Language
 TCL commands deal with the transaction within the database. 
 - COMMIT: Commits a Transaction.
@@ -89,7 +89,8 @@ https://drive.google.com/drive/folders/11-4BppTJugz_h297KKcvce2G0ZuUDewJ
 
 https://www.geeksforgeeks.org/sql-ddl-dql-dml-dcl-tcl-commands/
 
-w3schools.com/sql/sql_operators.asp
+https://www.w3schools.com/sql/sql_operators.asp
+
 
 
 
