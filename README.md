@@ -92,3 +92,4 @@ https://www.geeksforgeeks.org/sql-ddl-dql-dml-dcl-tcl-commands/
 w3schools.com/sql/sql_operators.asp
 
 
+
