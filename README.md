@@ -23,7 +23,7 @@ RDBMS stands for Relational Database Management System. The software used to sto
 A database object is any defined object in a database that is used to **store or reference data**. Anything we make from **CREATE COMMAND** is known as Database Object.
 Types of Database Ojects -
 - **Table** – Basic unit of storage; composed rows and columns
-- **View **– Logically represents subsets of data from one or more tables
+- **View ** – Logically represents subsets of data from one or more tables
 - **Sequence** – Generates primary key values
 - **Index** – Improves the performance of some queries
 - **Synonym** – Alternative name for an object
