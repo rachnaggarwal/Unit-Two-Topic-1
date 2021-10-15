@@ -1,0 +1,1 @@
+Insert into Student (idStudent,Name, Course, City, CollegeName) Values (1,'Rachna','Full Stack','Pathankot','Chandigarh University');
