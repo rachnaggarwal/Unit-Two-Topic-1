@@ -1,46 +1,44 @@
--- Which PROJECT has maximum number of EMPLOYEES? 
-SELECT * FROM allocation;
+USE rachna;
 
-SELECT project_id, COUNT(*) FROM allocation 
-GROUP BY project_id;
-
-SELECT project_id, COUNT(*) AS emp_count
-FROM allocation 
+-- 1.Which PROJECT has maximum number of EMPLOYEES? 
+SELECT project_id FROM allocation
 GROUP BY project_id
-HAVING COUNT(*)>=ALL(SELECT COUNT(*) FROM allocation GROUP BY project_id);
+HAVING COUNT(emp_id)>= ALL(SELECT COUNT(emp_id) FROM allocation GROUP BY project_id); 
 
--- Which EMPLOYEE has not yet been allocated to any PROJECT? 
+-- 2.Which EMPLOYEE has not yet been allocated to any PROJECT? 
+SELECT e.emp_name FROM employee AS e
+LEFT JOIN allocation AS a
+ON e.emp_id=a.emp_id
+WHERE project_id IS NULL;
 
-SELECT employee.emp_id, allocation.project_id, employee.emp_name
-FROM employee 
-LEFT JOIN allocation ON employee.emp_id=allocation.emp_id
-WHERE project_id is null;
+--  3. Which role played by the employee 'E03' frequently?
+SELECT role_title FROM role AS r
+LEFT JOIN allocation AS a
+ON r.role_id=a.role_id 
+GROUP BY a.emp_id
+HAVING COUNT(*)>=ALL(SELECT COUNT(*) FROM role AS r
+LEFT JOIN allocation AS a
+ON r.role_id=a.role_id 
+GROUP BY a.emp_id 
+HAVING a.emp_id='E003');
 
--- Which role played by the employee 'E03' frequently?
-SELECT allocation.emp_id, allocation.role_id, role.role_title, count(*) as role_count
-FROM allocation 
-LEFT JOIN role ON allocation.role_id=role.role_id 
-WHERE emp_id='E003' 
-GROUP BY role_title
-HAVING COUNT(*)>=ALL(SELECT COUNT(*) FROM allocation GROUP BY role_title); 
+-- 4.Which is the costliest Project?
+SELECT project_id FROM allocation
+GROUP BY project_id
+HAVING SUM(amount_per_day)>=ALL(SELECT SUM(amount_per_day) project_id FROM allocation GROUP BY project_id);
 
--- Which is the costliest Project?
-SELECT project_id, SUM(amount_per_day) as Sum
-FROM allocation
-Group by project_id
-HAVING SUM(amount_per_day)>=ALL(SELECT SUM(amount_per_day) FROM allocation Group by project_id);
+-- 5. How many employees were there in costliest Project? 
+SELECT DISTINCT COUNT(emp_id) FROM allocation
+GROUP BY project_id
+HAVING project_id=(SELECT project_id FROM allocation
+GROUP BY project_id
+HAVING SUM(amount_per_day)>=ALL(SELECT SUM(amount_per_day) project_id FROM allocation GROUP BY project_id))
+;
 
--- How many employees were there in costliest Project? 
-SELECT project_id, emp_id
-FROM allocation
-Where project_id='P002'
-Group by emp_id;
-
--- Which is the cheapest Project in the year 2012?
-Select project_id, from_date, SUM(amount_per_day) as Sum
-	from allocation 
-	where Year(from_date)='2012'
-Order By project_id DESC;
+-- 6. Which is the cheapest Project in the year 2012?
+SELECT project_id,  from_date FROM allocation
+GROUP BY YEAR(from_date)
+HAVING YEAR(from_date)=2012 AND SUM(amount_per_day)<=ALL(SELECT SUM(amount_per_day) FROM allocation WHERE YEAR(from_date)='2012' GROUP BY YEAR(from_date));
 
 -- How many projects are handled by senior most employee?
 SELECT employee.emp_id, employee.salary, allocation.project_id, employee.emp_name
