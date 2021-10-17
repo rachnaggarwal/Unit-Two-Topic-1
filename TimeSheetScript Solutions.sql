@@ -99,10 +99,22 @@ Left JOIN project ON project.project_id=allocation.project_id
 RIGHT JOIN role ON role.role_id=allocation.role_id 
 GROUP BY emp_name;
 
--- 37.	Prepare a report in this format Ram Works for Ashok Adam works for Akbar 
--- Where Ram is employee name and Ashok is his corresponding manager
-SELECT e.emp_name || 'Works for' || m.emp_name AS Employee_works_for
-FROM employee e
-INNER JOIN employee m
-on e.mgr_id=m.emp_id;
+-- 37. Prepare a report in this format Ram Works for Ashok Adam works for Akbar Where Ram is employee name and Ashok is his corresponding manager
+SELECT DISTINCT CONCAT(A.emp_name,'Works For',B.emp_name) AS `A Works For B`
+FROM employee A
+INNER JOIN employee B
+ON A.mgr_id=B.emp_id;
+
+/*45.	Using ROLL UP and CUBE
+Generate a report:
+Employee ID	 Project ID	Total salary*/
+SELECT emp_id, project_id, SUM(amount_per_day) as `Total Salary`
+FROM allocation
+GROUP BY emp_id WITH ROLLUP; 
+
+-- CUBE is not supported by MYsql
+-- ROLLUP working as CUBE in below case
+SELECT emp_id, project_id, SUM(amount_per_day) as `Total Salary`
+FROM allocation
+GROUP BY emp_id, project_id WITH ROLLUP; 
 
